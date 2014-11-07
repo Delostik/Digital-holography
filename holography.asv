@@ -22,11 +22,7 @@ function holography_OpeningFcn(hObject, eventdata, handles, varargin)
 handles.output = hObject;
 
 % Global Variant
-handles.lambda  = 0;
-handles.dist    = 0;
-handles.ccd     = 0;
-handles.oriFlag = 0;
-handles.bgFlag  = 0;
+handles.lambda = 0;
 
 % Update handles structure
 guidata(hObject, handles);
@@ -111,32 +107,34 @@ function oriPanel_ButtonDownFcn(hObject, eventdata, handles)
 % hObject    handle to oriPanel (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-[fn, pn, fi] = uigetfile({'*.bmp','BMP (*.bmp)';'*.jpg','JPEG (*.jpg)';'*.tif','TIF (*.tif)'}, '选择原图');
+[fn, pn, fi] = uigetfile('*.*', '选择图片');
 if [fn, pn]
     axes(handles.oriPic);
     set(gca, 'Visible', 'on');
     img = imread([pn fn]);
     imshow(img);
-    handles.oriFlag = [pn, fn];
-    guidata(hObject,handles)
 end
 
 
 % --- Executes on mouse press over axes background.
 function bgPic_ButtonDownFcn(hObject, eventdata, handles)
-[fn, pn, fi] = uigetfile({'*.bmp','BMP (*.bmp)';'*.jpg','JPEG (*.jpg)';'*.tif','TIF (*.tif)'}, '选择背景图');
+% hObject    handle to bgPic (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+[fn, pn, fi] = uigetfile('*.*', '选择图片');
 if [fn, pn]
     axes(handles.bgPic);
     set(gca, 'Visible', 'on');
     img = imread([pn fn]);
     imshow(img);
-    handles.oriFlag = [pn, fn];
-    guidata(hObject,handles)
 end
 
 
 % --------------------------------------------------------------------
 function bgPanel_ButtonDownFcn(hObject, eventdata, handles)
+% hObject    handle to bgPanel (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
 [fn, pn, fi] = uigetfile('*.*', '选择图片');
 if [fn, pn]
     axes(handles.bgPic);
@@ -146,6 +144,9 @@ if [fn, pn]
 end
 
 function lambda_Callback(hObject, eventdata, handles)
+% hObject    handle to lambda (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
 lambda = str2double(get(hObject, 'String'));
 if isnan(lambda)
     set(hObject, 'String', 532.8);
@@ -156,54 +157,61 @@ end
 guidata(hObject,handles)
 
 
+
 % --- Executes during object creation, after setting all properties.
 function lambda_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to lambda (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+
+
 
 function dist_Callback(hObject, eventdata, handles)
-dist = str2double(get(hObject, 'String'));
-if isnan(dist)
-    set(hObject, 'String', 0);
-    errordlg('请输入正确的数字！', '错误');
-else
-    handles.dist = dist;
-end
-guidata(hObject,handles)
+% hObject    handle to dist (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of dist as text
+%        str2double(get(hObject,'String')) returns contents of dist as a double
 
 
+% --- Executes during object creation, after setting all properties.
 function dist_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to dist (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
 
+
+
 function ccd_Callback(hObject, eventdata, handles)
-ccd = str2double(get(hObject, 'String'));
-if isnan(ccd)
-    set(hObject, 'String', 5);
-    errordlg('请输入正确的数字！', '错误');
-else
-    handles.ccd = ccd;
-end
-guidata(hObject,handles)
+% hObject    handle to ccd (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of ccd as text
+%        str2double(get(hObject,'String')) returns contents of ccd as a double
 
 
 % --- Executes during object creation, after setting all properties.
 function ccd_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ccd (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
-
-
-% --- Executes on button press in calcBtn.
-function calcBtn_Callback(hObject, eventdata, handles)
-if (~handles.oriFlag) 
-    errordlg('请选择原图！', '错误');
-elseif (~handles.bgFlag)
-    errordlg('请选择背景图！', '错误');
-else
-    errordlg('我要计算了！', 'ERROR');
-end
-
-
